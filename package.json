@@ -78,14 +78,5 @@
     "typescript": "^5.8.0",
     "typescript-eslint": "8.61.0"
   },
-  "sideEffects": false,
-  "x-semiotic-voxel": {
-    "profile": "org.harmonious-union.semiotic-voxel.v1",
-    "owner": "red-cup-engineering",
-    "kind": "inert-material",
-    "actor": "urn:ame:computing-with-http",
-    "operations": [],
-    "capabilities": [],
-    "package": "@red-cup-engineering/computing-with-http"
-  }
+  "sideEffects": false
 }
