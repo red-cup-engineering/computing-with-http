@@ -19,7 +19,10 @@ export function parseCookieHeader(header: string | readonly string[] | undefined
     if (equals <= 0) continue;
     const name = trimmed.slice(0, equals).trim();
     if (!isCookieName(name) || Object.hasOwn(cookies, name)) continue;
-    cookies[name] = decodeCookieValue(trimmed.slice(equals + 1).trim());
+    Object.defineProperty(cookies, name, {
+      value: decodeCookieValue(trimmed.slice(equals + 1).trim()),
+      enumerable: true, configurable: true, writable: true,
+    });
   }
   return Object.freeze(cookies);
 }

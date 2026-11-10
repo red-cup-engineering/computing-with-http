@@ -10,6 +10,7 @@ export function httpDate(when: Date | number = new Date()): string { // law-allo
 }
 
 export function parseHttpDate(value: string): Date | null {
-  const date = new Date(value);
+  const asctime = /^[A-Z][a-z]{2} [A-Z][a-z]{2} [ \d]\d \d{2}:\d{2}:\d{2} \d{4}$/u.test(value);
+  const date = new Date(asctime ? value + " GMT" : value);
   return Number.isNaN(date.getTime()) ? null : date;
 }

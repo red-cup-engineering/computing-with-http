@@ -24,7 +24,10 @@ export function parseContentType(value: HeaderValue): ContentType | null {
     if (eq <= 0) continue;
     const key = part.slice(0, eq).trim().toLowerCase();
     if (!key) continue;
-    params[key] = unquoteHeaderValue(part.slice(eq + 1).trim());
+    Object.defineProperty(params, key, {
+      value: unquoteHeaderValue(part.slice(eq + 1).trim()),
+      enumerable: true, configurable: true, writable: true,
+    });
   }
   return Object.freeze({ type, params: Object.freeze(params) });
 }

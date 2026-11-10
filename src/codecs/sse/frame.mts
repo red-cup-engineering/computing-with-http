@@ -44,8 +44,7 @@ export function parseSseStream(text: string): readonly SseEvent[] {
   let dataLines: string[] = [];
 
   const dispatch = (): void => {
-    if (dataLines.length === 0 && eventName === undefined && id === undefined && retry === undefined) return;
-    events.push(Object.freeze({
+    if (dataLines.length) events.push(Object.freeze({
       data: dataLines.join("\n"),
       ...(eventName !== undefined ? { event: eventName } : {}),
       ...(id !== undefined ? { id } : {}),
@@ -57,7 +56,9 @@ export function parseSseStream(text: string): readonly SseEvent[] {
     dataLines = [];
   };
 
-  for (const rawLine of text.split(/\r\n|\r|\n/)) {
+  const lines = text.split(/\r\n|\r|\n/);
+  lines.pop(); // An unterminated final line cannot complete an event.
+  for (const rawLine of lines) {
     if (rawLine === "") {
       dispatch();
       continue;
@@ -85,6 +86,5 @@ export function parseSseStream(text: string): readonly SseEvent[] {
         break;
     }
   }
-  dispatch();
   return Object.freeze(events);
 }

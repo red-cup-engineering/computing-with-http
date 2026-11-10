@@ -8,3 +8,13 @@
 <!-- 561-group-standards:badges:end -->
 
 HTTP computing primitives: protocol codecs for headers, cookies, negotiation, SSE, WebSocket frames, ESI, and multipart bodies.
+
+## Native qualification
+
+Install the locked development closure with `npm ci --ignore-scripts`, then run
+`npm test`. The suite builds the package and executes its compiled
+[protocol checks](src/codecs/protocol.test.mts). Node Engineering replays those
+tests against the packed build through the existing TypeScript project mapping.
+
+The checks use published HTTP-date and WebSocket vectors, documented cookie and
+media-type round trips, and complete SSE event framing. [HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110.html#section-5.6.7) · [WebSocket Protocol](https://www.rfc-editor.org/rfc/rfc6455.html#section-5.7) · [HTML event streams](https://html.spec.whatwg.org/multipage/server-sent-events.html#event-stream-interpretation)
