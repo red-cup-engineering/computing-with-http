@@ -53,10 +53,10 @@ export function parseMultipartForm(body: Buffer | string, boundary: string): Mul
     const data = Buffer.from(buffer.subarray(headerEnd + 4, dataEnd));
     offset = next;
 
-    const disposition = parseContentDisposition(headers["content-disposition"]);
-    const name = disposition.params["name"];
-    if (!name || disposition.type !== "form-data") continue;
-    const part = multipartPart(name, data, headers, disposition.params["filename"]);
+    const decision = parseContentDecision(headers["content-disposition"]);
+    const name = decision.params["name"];
+    if (!name || decision.type !== "form-data") continue;
+    const part = multipartPart(name, data, headers, decision.params["filename"]);
     parts.push(part);
     if (part.filename !== undefined) files.push(part);
     else fields.append(name, part.text());
@@ -85,13 +85,13 @@ export function serializeMultipartForm(parts: readonly MultipartPartInit[], boun
   if (!boundary || /[\r\n]/.test(boundary)) throw new TypeError("multipart boundary must be a non-empty token");
   const chunks: Buffer[] = [];
   for (const part of parts) {
-    const disposition = [
+    const decision = [
       `Content-Disposition: form-data; name=${quoteHeaderValue(part.name)}`,
       ...(part.filename !== undefined ? [`; filename=${quoteHeaderValue(part.filename)}`] : []),
     ].join("");
     const headers = [
       `--${boundary}`,
-      disposition,
+      decision,
       ...(part.contentType !== undefined ? [`Content-Type: ${part.contentType}`] : []),
       "",
       "",
@@ -116,7 +116,7 @@ function parsePartHeaders(raw: string): Record<string, string> {
   return headers;
 }
 
-function parseContentDisposition(value: string | undefined): ContentType {
+function parseContentDecision(value: string | undefined): ContentType {
   return parseContentType(value) ?? Object.freeze({ type: "", params: Object.freeze({}) });
 }
 
