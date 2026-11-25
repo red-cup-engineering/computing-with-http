@@ -6,13 +6,14 @@
 // server-to-client frames), and the decoder additionally accepts the
 // masked client-to-server form, unmasking on decode.
 
+import { protocolDigestBase64 } from "@red-cup-engineering/cryptographic-computer-data-engineering-services-section/hash";
 import crypto from "node:crypto";
 
 const WS_MAGIC = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 
 /** Sec-WebSocket-Accept derivation: the handshake's key representation. */
 export function acceptKey(clientKey: string): string {
-  return crypto.createHash("sha1").update(clientKey + WS_MAGIC).digest("base64");
+  return protocolDigestBase64("sha1", clientKey + WS_MAGIC);
 }
 
 /** Encode one frame in server framing (unmasked). */
